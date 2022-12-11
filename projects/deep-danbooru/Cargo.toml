@@ -1,16 +1,17 @@
 [package]
-name = "sub_projects"
-publish = false
+name = "deep-danbooru"
 version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
 description = "..."
-repository = "https://github.com/oovm/sub_projects"
-documentation = "https://docs.rs/sub_projects"
+repository = "https://github.com/libwaifu/deep-danbooru"
+documentation = "https://docs.rs/deep-danbooru"
 readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+tch = "0.10.3"
+#image = "0.24.5"
 
 [dev-dependencies]
 
