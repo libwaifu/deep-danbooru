@@ -5,6 +5,7 @@ default-members = [
 ]
 exclude = [
     "projects/.DS_Store",
+    "projects/deep-danbooru-models",
 ]
 
 [profile.release]

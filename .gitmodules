@@ -1,0 +1,4 @@
+[submodule "projects/deep-danbooru-models"]
+	path = projects/deep-danbooru-models
+	url = https://huggingface.co/oovm/deep-danbooru.git
+    branch = main
