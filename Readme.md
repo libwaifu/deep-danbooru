@@ -12,7 +12,5 @@ https://huggingface.co/oovm/deep-danbooru
 ### Update
 
 ```
-git add .
 git pull && git submodule update --remote
-git push && git push --recurse-submodules=on-demand
 ```
