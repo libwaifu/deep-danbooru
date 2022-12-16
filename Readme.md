@@ -1,5 +1,5 @@
-Rust Template Project
-=====================
+Deep Danbooru for rust
+======================
 
 Rust template project for monorepo
 

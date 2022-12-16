@@ -10,8 +10,19 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-tch = "0.10.3"
-#image = "0.24.5"
+ndarray = "0.15.6"
+
+[dependencies.image]
+version = "0.24.5"
+features = ["png", "jpeg", "jpeg_rayon"]
+default-features = false
+
+[dependencies.ort]
+#version = "1.14.1"
+git = "https://github.com/pykeio/ort.git"
+features = ["tensorrt", "load-dynamic"]
+#features = ["compile-static", "experimental"]
+default-features = false
 
 [dev-dependencies]
 
