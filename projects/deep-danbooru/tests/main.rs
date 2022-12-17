@@ -1,11 +1,11 @@
-use std::path::PathBuf;
-use image::imageops::FilterType;
+use std::{
+    path::{Path, PathBuf},
+    sync::Arc,
+};
 
-use image::io::Reader;
-use image::{Rgb32FImage, RgbImage};
+use image::{imageops::FilterType, io::Reader, DynamicImage, Rgb32FImage};
 use ndarray::ArrayD;
-use ort::{Environment, ExecutionProvider, OrtResult, SessionBuilder};
-use ort::tensor::InputTensor;
+use ort::{tensor::InputTensor, Environment, ExecutionProvider, OrtResult, Session, SessionBuilder};
 
 #[test]
 fn ready() {
@@ -18,30 +18,10 @@ fn test() -> OrtResult<()> {
     println!("{}", env!("ORT_DYLIB_PATH"));
     let projects = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..").canonicalize().unwrap();
     println!("{:?}", projects.display());
-    let mut env = Environment::default().into_arc();
-    let session = SessionBuilder::new(&env)
-        .unwrap()
-        .with_execution_providers(&[ExecutionProvider::cuda(), ExecutionProvider::cpu()])
-        .unwrap()
-        .with_model_from_file(
-            projects.join("deep-danbooru-models/models/deepdanbooru2020.onnx")
-        )
-        .unwrap();
-    let image = Reader::open(projects.join("deep-danbooru/tests/105715609_p0_master1200.jpg")).unwrap().decode().unwrap();
-
-    let array = make_input_tensor(&image.resize_exact(512, 512, FilterType::CatmullRom).to_rgb32f());
-
-
-    // let inputs = vec![array];
-    let out = session.run(&[array]).unwrap();
-    // let index = out;
-
-    println!("{:?}", out);
+    let runtime = Arc::new(Environment::builder().build()?);
+    let model = DeepDanbooru::new(&runtime, projects.join("deep-danbooru-models/models/deepdanbooru-2021.onnx").as_path())?;
+    let image = Reader::open(projects.join("deep-danbooru-models/tests/pixel-105715609.jpg")).unwrap().decode().unwrap();
+    let result = model.predict(&image).unwrap();
+    println!("{:?}", result);
     Ok(())
-}
-
-pub fn make_input_tensor(image: &Rgb32FImage) -> InputTensor {
-    let shape = vec![1, image.width() as usize, image.height() as usize, 3];
-    let array = ArrayD::from_shape_vec(shape, image.as_raw().to_vec()).unwrap();
-    InputTensor::FloatTensor(array)
 }

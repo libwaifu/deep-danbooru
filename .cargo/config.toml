@@ -1,0 +1,13 @@
+[env]
+ORT_STRATEGY = "system"
+#ORT_LIB_LOCATION = "D:\\onnxruntime\\lib"
+ORT_DYLIB_PATH = "D:\\onnxruntime\\lib\\onnxruntime.dll"
+
+#[build]
+#rustflags = ["--cfg=web_sys_unstable_apis"]
+
+#[target.wasm32-unknown-unknown]
+#rustflags = [
+#    "--cfg=web_sys_unstable_apis",
+#    "-C", "link-args=-z stack-size=15000000",
+#]
