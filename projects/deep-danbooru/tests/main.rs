@@ -1,11 +1,9 @@
-use std::{
-    path::{Path, PathBuf},
-    sync::Arc,
-};
+use std::{path::PathBuf, sync::Arc};
 
-use image::{imageops::FilterType, io::Reader, DynamicImage, Rgb32FImage};
-use ndarray::ArrayD;
-use ort::{tensor::InputTensor, Environment, ExecutionProvider, OrtResult, Session, SessionBuilder};
+use image::io::Reader;
+use ort::{Environment, OrtResult};
+
+use deep_danbooru::{DeepDanbooru, Tags2Rust};
 
 #[test]
 fn ready() {
@@ -24,4 +22,12 @@ fn test() -> OrtResult<()> {
     let result = model.predict(&image).unwrap();
     println!("{:?}", result);
     Ok(())
+}
+
+#[test]
+fn write_rust_tags() {
+    let text = include_str!("../../deep-danbooru-models/models/deepdanbooru-2021.tags");
+    let mut tags = Tags2Rust::new(2021);
+    tags.parse(text);
+    println!("{:?}", tags.tags.len());
 }

@@ -11,6 +11,7 @@ edition = "2021"
 
 [dependencies]
 ndarray = "0.15.6"
+itertools = "0.10.5"
 
 [dependencies.image]
 version = "0.24.5"
