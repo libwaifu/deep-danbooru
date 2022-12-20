@@ -1,16 +1,22 @@
 Deep Danbooru for rust
 ======================
 
-Rust template project for monorepo
+Multi-labels anime image classification without python.
 
-https://github.com/libwaifu/deep-danbooru
+### Develop
 
-https://huggingface.co/oovm/deep-danbooru
+- Clone with models
 
-
-
-### Update
-
+```shell
+# https
+git clone --recursive https://github.com/libwaifu/deep-danbooru.git
+# git
+git clone --recursive git@github.com:libwaifu/deep-danbooru.git
 ```
+
+- Pull latest models
+
+```shell
 git pull && git submodule update --remote
 ```
+

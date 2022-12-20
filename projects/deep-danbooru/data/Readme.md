@@ -1,3 +1,0 @@
-## Deep Danbooru for rust
-
-

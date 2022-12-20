@@ -1,6 +1,8 @@
 use std::{
     fmt::{Debug, Display, Formatter, Write},
-    path::{Path, PathBuf},
+    fs::File,
+    io::Write as _,
+    path::Path,
 };
 
 #[derive(Debug)]
@@ -21,7 +23,7 @@ impl Tags2Rust {
                 continue;
             }
             match line {
-                "0_0" => self.add("0_0"),
+                "0_0" | "(o)_(o)" => self.add(line),
                 _ => self.parse_line(line),
             }
         }
@@ -39,14 +41,18 @@ impl Tags2Rust {
         }
         self.tags.push(normed);
     }
-    pub fn file_path(&self, path: &Path) -> PathBuf {
+    pub fn write_file(&self, path: &Path) -> std::io::Result<()> {
         assert!(path.is_dir(), "TODO");
-        path.join(format!("tags{}.rs", self.year))
+        let path = path.join(format!("tags{}.rs", self.year));
+        let mut file = File::create(path)?;
+        file.write_all(self.to_string().as_bytes())
     }
 }
 
 impl Display for Tags2Rust {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "pub const TAGS{}: &'static [&'static str; {}] = ", self.year, self.tags.len());
+        write!(f, "pub const TAGS{}: &'static [&'static str; {}] = &", self.year, self.tags.len())?;
+        write!(f, "{:#?}", self.tags)?;
+        f.write_char(';')
     }
 }

@@ -1,6 +1,6 @@
 [env]
 ORT_STRATEGY = "system"
-#ORT_LIB_LOCATION = "D:\\onnxruntime\\lib"
+ORT_LIB_LOCATION = "D:\\onnxruntime\\lib"
 ORT_DYLIB_PATH = "D:\\onnxruntime\\lib\\onnxruntime.dll"
 
 #[build]

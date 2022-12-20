@@ -5,9 +5,9 @@ use itertools::Itertools;
 use ndarray::{Array2, ArrayD};
 use ort::{tensor::InputTensor, Environment, ExecutionProvider, OrtResult, Session, SessionBuilder};
 
-mod tags2019;
-mod tags2020;
-mod tags2021;
+pub mod tags2019;
+pub mod tags2020;
+pub mod tags2021;
 
 #[derive(Debug, Clone, Copy)]
 pub enum DeepDanbooruPreProgress {
@@ -34,7 +34,7 @@ impl DeepDanbooru {
     pub fn set_tags(&mut self, tags: &'static [&'static str]) {
         self.tags = tags;
     }
-    pub fn predict(&self, image: &DynamicImage) -> Vec<(f32, &'static str)> {
+    pub fn predict(&self, image: &DynamicImage) -> OrtResult<Vec<(&'static str, f32)>> {
         let post = match self.pre_process {
             DeepDanbooruPreProgress::Resize => image.resize_exact(512, 512, FilterType::CatmullRom),
             DeepDanbooruPreProgress::Crop => image.crop_imm(0, 0, 512, 512),
@@ -44,12 +44,14 @@ impl DeepDanbooru {
         let array = out.first().unwrap().try_extract()?;
         let similarity: Array2<f32> = array.view().to_owned().into_dimensionality().unwrap();
         let similarity = similarity.into_raw_vec();
-        similarity
+        let out = similarity
             .iter()
             .zip(self.tags.iter())
             .sorted_by(|l, r| l.0.partial_cmp(r.0).unwrap_or(Ordering::Equal))
-            .map(|(k, v)| (*k, *v))
-            .collect_vec()
+            .rev()
+            .map(|(k, v)| (*v, *k))
+            .collect_vec();
+        Ok(out)
     }
 }
 
