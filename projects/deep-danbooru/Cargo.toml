@@ -1,6 +1,6 @@
 [package]
 name = "deep-danbooru"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Aster <192607617@qq.com>"]
 description = "Multi-labels anime image classification in rust"
 repository = "https://github.com/libwaifu/deep-danbooru"
@@ -15,14 +15,10 @@ itertools = "0.10.5"
 
 [dependencies.image]
 version = "0.24.5"
-features = ["png", "jpeg", "jpeg_rayon"]
 default-features = false
 
 [dependencies.ort]
 version = "1.14.1"
-#git = "https://github.com/pykeio/ort.git"
-features = []
-#features = ["compile-static", "experimental"]
 default-features = false
 
 [dev-dependencies]
